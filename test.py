@@ -5,11 +5,12 @@ import numpy as np
 import csv
 from fractions import Fraction
 # from scipy.special import gamma, gammainc, gammaincc
-from gamma_functions import *
-
-from non_overlapping_template_matching_test import *
 import cmath
 import random
+
+from gamma_functions import *
+from non_overlapping_template_matching_test import *
+from serial_test import *
 
 def monobit_test(input, output):
 
@@ -375,7 +376,6 @@ def dft_test(input, output, ):
             fieldnames[5]: write_array[3]/num_count,
             })
 
-
 def non_overlapping_test(input, output):
     fi = open(input, "r+")
 
@@ -419,6 +419,31 @@ def non_overlapping_test(input, output):
             })
 
 
+def serial_test1(input, output):
+	
+	fi = open(input, "r+")
+
+	num_count = 0
+	
+	write_array = [0.0,0.0,0.0,0.0]
+
+   	with open(output, mode="w") as fo:
+
+   		fieldnames = ['number', 'mu', 'sigma', 'chi_sq','p-value', 'success']
+
+		writer = csv.DictWriter(fo, fieldnames=fieldnames)
+
+		writer.writeheader()
+
+		for line in fi:
+
+			t = hex(int(line, 2))[2:-1].upper() #hex form of the number
+
+    	   	num_count += 1
+
+    	   	result = serial_test(line)
+
+
 
 def main():
     input = "input.txt"
@@ -435,6 +460,8 @@ def main():
 
     output_nonoverlapping = "result_nonoverlapping_test.csv"
 
+    output_serial = "result_serial_test.csv"
+
 
     # monobit_test(input,output_monobit)
 
@@ -447,6 +474,8 @@ def main():
     # dft_test(input, output_dft)
 
     # non_overlapping_test(input, output_nonoverlapping)
+
+    serial_test1(input,output_serial)
 
 
 if __name__ == "__main__":
