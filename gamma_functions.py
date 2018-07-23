@@ -6,6 +6,7 @@ from math import gamma,e
 # 6.5.31 Handbook of Mathematical Functions, page 263
 #    Recursive implementation
 def upper_incomplete_gamma(a,x,d=0,iterations=100):
+    # print(d)
     if d == iterations:
         if ((d % 2) == 1):
             return 1.0 # end iterations

@@ -1,8 +1,5 @@
 from __future__ import print_function
-
 import math
-from gamma_functions import *
-
 import scipy.special as ss
 
 def int2patt(n,m):
@@ -11,6 +8,12 @@ def int2patt(n,m):
         pattern.append((n >> i) & 1)
 
     return pattern
+
+def padding(input,m):
+    while len(input) < m:
+        input = '0' + input
+
+    return input
     
 def countpattern(patt,input,n):
     thecount = 0
@@ -18,17 +21,29 @@ def countpattern(patt,input,n):
     for i in range(n):
         match = True
         for j in range(len(patt)):
-            if str(patt[j]) != input[i+j]:
+            if str(patt[len(patt)-j-1]) != input[i+j]:
                 match = False
         if match:
             thecount += 1
     return thecount
 
 def psi_sq_mv1(m, n, padded_input):
-    counts = [0 for i in range(2**m)] 
+    counts = [0 for i in range(2**m)]
     for i in range(2**m):
         pattern = int2patt(i,m)
+
+        pattern2 = padding(bin(i)[2:], m)
+
+        print(pattern)
+        print(pattern2)
+        print(padded_input)
+
         count = countpattern(pattern,padded_input,n)
+
+        count2 = padded_input.count(pattern2)
+
+        print("count = " + str(count))
+        print("count2 = " + str(count2))
         counts.append(count)
         
     psi_sq_m = 0.0
@@ -38,14 +53,9 @@ def psi_sq_mv1(m, n, padded_input):
     psi_sq_m -= n
     return psi_sq_m            
          
-def serial_test(input,patternlen=None):
-    
-    n = len(input) - 1
+def test(input, n, patternlen=None):
 
-    if n%2 != 0:
-        print(n)
-        exit()
-
+    # Pattern length
     if patternlen != None:
         m = patternlen  
     else:  
@@ -53,49 +63,23 @@ def serial_test(input,patternlen=None):
     
         if m < 4:
             print("Error. Not enough data for m to be 4")
-            return False,0,None
+            return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, False]
         m = 4
 
     # Step 1
     padded_input=input[0:n]+input[0:m-1]
-
-    # print("padded input = " + str(padded_input))
     
     # Step 2
     psi_sq_m   = psi_sq_mv1(m, n, padded_input)
     psi_sq_mm1 = psi_sq_mv1(m-1, n, padded_input)
     psi_sq_mm2 = psi_sq_mv1(m-2, n, padded_input)    
-
-    # print("psi_sq_m = " + str(psi_sq_m))
-    # print("psi_sq_mm1 = " + str(psi_sq_mm1))
-    # print("psi_sq_mm2 = " + str(psi_sq_mm2))
     
     delta1 = psi_sq_m - psi_sq_mm1
     delta2 = psi_sq_m - (2*psi_sq_mm1) + psi_sq_mm2
 
-    # print("delta1 = " + str(delta1))
-    # print("delta2 = " + str(delta2))
-    # print("\n")
-    
-    # p1 = gammaincc(2**(m-2),delta1/2.0)
-    # p2 = gammaincc(2**(m-3),delta2/2.0)
-    # print("p1 = " + str(p1))
-    # print("p2 = " + str(p2))
     p1 = ss.gammaincc(2**(m-2),delta1/2.0)
     p2 = ss.gammaincc(2**(m-3),delta2/2.0)
-    # print("p1 = " + str(p1))
-    # print("p2 = " + str(p2))
-
-    # print("")
-        
-    # print("  psi_sq_m   = ",psi_sq_m)
-    # print("  psi_sq_mm1 = ",psi_sq_mm1)
-    # print("  psi_sq_mm2 = ",psi_sq_mm2)
-    # print("  delta1     = ",delta1)
-    # print("  delta2     = ",delta2)  
-    # print("  p1         = ",p1)
-    # print("  p2         = ",p2)
      
     success = (p1 >= 0.01) and (p2 >= 0.01)
+
     return [psi_sq_m, psi_sq_mm1, psi_sq_mm2, delta1, delta2, p1, p2, success]
-    

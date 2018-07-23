@@ -2,7 +2,7 @@ import math
 import scipy.special as ss
 import random
 
-def non_overlapping_template_matching_test(input, n):
+def test(input, n):
 
     # The templates provdided in SP800-22rev1a
     templates = [None for x in range(7)]
