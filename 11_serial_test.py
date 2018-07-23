@@ -2,48 +2,21 @@ from __future__ import print_function
 import math
 import scipy.special as ss
 
-def int2patt(n,m):
-    pattern = list()
-    for i in range(m):
-        pattern.append((n >> i) & 1)
-
-    return pattern
-
 def padding(input,m):
     while len(input) < m:
         input = '0' + input
 
     return input
-    
-def countpattern(patt,input,n):
-    thecount = 0
-
-    for i in range(n):
-        match = True
-        for j in range(len(patt)):
-            if str(patt[len(patt)-j-1]) != input[i+j]:
-                match = False
-        if match:
-            thecount += 1
-    return thecount
 
 def psi_sq_mv1(m, n, padded_input):
     counts = [0 for i in range(2**m)]
     for i in range(2**m):
-        pattern = int2patt(i,m)
 
-        pattern2 = padding(bin(i)[2:], m)
+        pattern = padding(bin(i)[2:], m)
 
-        print(pattern)
-        print(pattern2)
-        print(padded_input)
 
-        count = countpattern(pattern,padded_input,n)
-
-        count2 = padded_input.count(pattern2)
-
-        print("count = " + str(count))
-        print("count2 = " + str(count2))
+        count = padded_input.count(pattern)
+        
         counts.append(count)
         
     psi_sq_m = 0.0
