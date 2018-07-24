@@ -15,7 +15,7 @@ def test(input, n, M=32):
         M = int(math.floor(n/N))
 
     if n < 100:
-        print("Too little data for test. Supply at least 100 bits")
+        # print("Too little data for test. Supply at least 100 bits")
         return [0.0, 0.0, False]
 
     num_of_blocks = N

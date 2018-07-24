@@ -32,12 +32,15 @@ def main():
     fieldnames[5] = ['number', 'N0', 'N1', 'd','p-value', 'success']
     fieldnames[6] = ['number', 'mu', 'sigma', 'chi_sq','p-value', 'success']
     fieldnames[10] = ['number', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
+    fieldnames[11] = ['number', 'appen_m', 'chi_sqp', 'p', 'success']
+    fieldnames[12] = ['number', 'p_forward', 'p_backward', 'success']
+    fieldnames[13] = ['number', 'J', 'success']
     
     fo = [None]*NUM_TEST #file out
 
     output = [None]*NUM_TEST  #output file name
     writer = [None]*NUM_TEST  #writers of csv file
-
+ 
     source = [None]*NUM_TEST
 
     for i in range(NUM_TEST):
@@ -65,7 +68,7 @@ def main():
                 else:
                     m = __import__(str(i+1) + "_" + testlist[i])
 
-                x = m.test(line, 256)
+                x = m.test(line[:-1], 256)
 
                 print(testlist[i] + ": result = " + str(x[len(x)-1]))
         exit()
