@@ -31,10 +31,14 @@ def main():
     fieldnames[3] = ['number', 'chisq','p-value', 'success']
     fieldnames[5] = ['number', 'N0', 'N1', 'd','p-value', 'success']
     fieldnames[6] = ['number', 'mu', 'sigma', 'chi_sq','p-value', 'success']
+    fieldnames[7] = ['number', 'chi_sq','p-value', 'success']
+    fieldnames[8] = ['number', 'sigma', 'p-value', 'success']
+    fieldnames[9] = ['number', 'chi_sq','p-value', 'success']
     fieldnames[10] = ['number', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
-    fieldnames[11] = ['number', 'appen_m', 'chi_sqp', 'p', 'success']
+    fieldnames[11] = ['number', 'appen_m', 'chi_sq', 'p-value', 'success']
     fieldnames[12] = ['number', 'p_forward', 'p_backward', 'success']
     fieldnames[13] = ['number', 'J', 'success']
+    fieldnames[14] = ['number', 'J', 'success']
     
     fo = [None]*NUM_TEST #file out
 
@@ -70,7 +74,7 @@ def main():
 
                 x = m.test(line[:-1], 256)
 
-                print(testlist[i] + ": result = " + str(x[len(x)-1]))
+                print(testlist[i] + ": result = " + str(x[len(x)-1]) + "\n")
         exit()
         # for i in range(NUM_TEST):
 

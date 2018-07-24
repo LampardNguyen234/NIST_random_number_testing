@@ -1,7 +1,7 @@
 import math
 
 # RANDOM EXCURSION VARIANT TEST
-def random_excursion_variant_test(input, n):
+def test(input, n):
 
     x = list()             # Convert to +1,-2
     for i in range(n):

@@ -31,8 +31,7 @@ def test(input, n):
         cycles.append(cycle)
         pos = pos + 1
     
-    J = len(cycles)
-    print("J="+str(J))    
+    J = len(cycles)  
     
     vxk = [['a','b','c','d','e','f'] for y in [-4,-3,-2,-1,1,2,3,4] ]
 
