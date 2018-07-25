@@ -30,14 +30,16 @@ def test(input, n):
     # Compute P values
     success = True
     plist = list() # list of p-values for each state
+    p_average = 0.0
     for x in range(-9,10): 
         if x != 0:
             top = abs(count[x]-J)
             bottom = math.sqrt(2.0 * J *((4.0*abs(x))-2.0))
             p = top/bottom
+            p_average +=p
             plist.append(p)
             if p < 0.01:
                 success = False
 
-    return [n, J, count, plist, success]
+    return [n, J, count, plist, p_average/19, success]
 

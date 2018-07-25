@@ -70,6 +70,7 @@ def test(input, n):
     success = True
     plist = list()
     chi_sq = list()
+    p_average = 0.0
     for index in range(8):
         #list of states
         mapping = [-4,-3,-2,-1,1,2,3,4] 
@@ -81,12 +82,13 @@ def test(input, n):
             bottom = J * pixk[abs(x)-1][k]
             chisq += top/bottom
         p = ss.gammaincc(5.0/2.0,chisq/2.0)
+        p_average += p
         plist.append(p)
         chi_sq.append(chisq)
         if p < 0.01:
             success = False
 
-    return [n, J, chi_sq, plist, success]
+    return [n, J, chi_sq, plist, p_average/8, success]
 
 
 

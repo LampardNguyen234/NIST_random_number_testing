@@ -38,8 +38,8 @@ def main():
     fieldnames[10] = ['n', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
     fieldnames[11] = ['n', 'appen_m', 'chi_sq', 'p-value', 'success']
     fieldnames[12] = ['n', 'p_forward', 'p_backward', 'success']
-    fieldnames[13] = ['n', 'J', 'chi_sq', 'p-value', 'success']
-    fieldnames[14] = ['n', 'J', 'count', 'p-value', 'success']
+    fieldnames[13] = ['n', 'J', 'chi_sq', 'p-value', 'p_average', 'success']
+    fieldnames[14] = ['n', 'J', 'count', 'p-value', 'p_average','success']
     
     fo = [None]*NUM_TEST #file out
 
@@ -65,11 +65,13 @@ def main():
 
 
     for i in range(NUM_TEST):
-        if i ==9:
+
+        if i==9:
             continue
 
         total_count = 0
         success_count =0
+        p_average = 0.0
         # Get corresponding .py test file
         if i<9:
             m = __import__("0"+ str(i+1) + "_" + testlist[i])
@@ -87,16 +89,21 @@ def main():
             # count = 0
             bits = ''
             for line in fi:
-                if len(bits) < 38912:
+                if len(bits) < 38912*2:
                     bits += line[:-1]
                 else:
                     total_count +=1
                     x = m.test(bits, len(bits))
 
+                    p_average += x[len(x)-2]
+
                     if x[len(x)-1]:
                         success_count +=1
 
                     writeDict = {}
+
+                    if total_count == 698:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -109,15 +116,21 @@ def main():
         elif i == 7:
             bits = ''
             for line in fi:
-                if len(bits) < 1028016:
+                if len(bits) < 1028016 *2:
                     bits += line[:-1]
                 else:
+                    total_count +=1
                     x = m.test(bits, len(bits))
+
+                    p_average += x[len(x)-2]
 
                     if x[len(x)-1]:
                         success_count +=1
 
                     writeDict = {}
+
+                    if total_count == 26:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -130,15 +143,21 @@ def main():
         elif i==8:
             bits = ''
             for line in fi:
-                if len(bits) < 387840:
+                if len(bits) < 387840*2:
                     bits += line[:-1]
                 else:
+                    total_count +=1
                     x = m.test(bits, len(bits))
+
+                    p_average += x[len(x)-2]
 
                     if x[len(x)-1]:
                         success_count +=1
 
                     writeDict = {}
+
+                    if total_count == 70:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -149,15 +168,21 @@ def main():
         elif i==9:
             bits = ''
             for line in fi:
-                if len(bits) < 1000000:
+                if len(bits) < 1000000*2:
                     bits += line[:-1]
                 else:
+                    total_count +=1
                     x = m.test(bits, len(bits))
+
+                    p_average += x[len(x)-2]
 
                     if x[len(x)-1]:
                         success_count +=1
 
                     writeDict = {}
+
+                    if total_count == 27:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -168,18 +193,24 @@ def main():
         elif i==13 or i==14:
             bits = ''
             for line in fi:
-                if len(bits) < 1000000:
+                if len(bits) < 1000000*2:
                     bits += line[:-1]
                 else:
+                    total_count +=1
                     x = m.test(bits, len(bits))
+
+                    p_average += x[len(x)-2]
 
                     if x[len(x)-1]:
                         success_count +=1
 
                     if x[1] <500:
-                        x[len(x)-1] = str(x[len(x)-1]) + " NOT RELIABLE: J = 500"
+                        x[len(x)-1] = str(x[len(x)-1]) + " NOT RELIABLE: J < 500"
 
                     writeDict = {}
+
+                    if total_count == 27:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -194,6 +225,8 @@ def main():
 
                     x = m.test(line[:-1], len(line[:-1]))
 
+                    p_average += x[len(x)-2]
+
                     if x[len(x)-1]:
                         success_count +=1
 
@@ -203,15 +236,18 @@ def main():
 
                     # writer[i].write(123)
 
-                    if total_count ==212906:
-                        print(x)
+                    if total_count == 212906:
+                        print("total = " + str(total_count))
 
                     for j in range(len(x)):
                     	writeDict[fieldnames[i][j+1]] = x[j]
 
                     writer[i].writerow(writeDict)
-            print("count = " + str(total_count))
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
+        writeDict = {}
+        writeDict[fieldnames[i][len(fieldnames[i])-1]] = float(success_count)/total_count
+        writeDict[fieldnames[i][len(fieldnames[i])-2]] = p_average/total_count
+
+        writer[i].writerow(writeDict)
         print("Test "+ str(i+1) + ": " + testlist[i] + " finished!")       	
         # for i in range(NUM_TEST):
 
