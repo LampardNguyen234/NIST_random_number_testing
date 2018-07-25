@@ -103,7 +103,7 @@ def main():
                     writeDict = {}
 
                     if total_count == 698:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -130,7 +130,7 @@ def main():
                     writeDict = {}
 
                     if total_count == 26:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -157,7 +157,7 @@ def main():
                     writeDict = {}
 
                     if total_count == 70:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -182,7 +182,7 @@ def main():
                     writeDict = {}
 
                     if total_count == 27:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -210,7 +210,7 @@ def main():
                     writeDict = {}
 
                     if total_count == 27:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
@@ -237,7 +237,7 @@ def main():
                     # writer[i].write(123)
 
                     if total_count == 212906:
-                        print("total = " + str(total_count))
+                        print(x)
 
                     for j in range(len(x)):
                     	writeDict[fieldnames[i][j+1]] = x[j]
