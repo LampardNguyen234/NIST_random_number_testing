@@ -25,20 +25,21 @@ def main():
 
     fieldnames = [None] * NUM_TEST    #fieldnames according to csv file
 
-    fieldnames[0] = ['number', 'zeroes count', 'ones count', 's', 'p-value', 'success']
-    fieldnames[1] = ['number','chisq','p-value', 'success']
-    fieldnames[2] = ['number', 'zeroes count', 'ones count', 'one_prop', 'vobs','p-value', 'success']
-    fieldnames[3] = ['number', 'chisq','p-value', 'success']
-    fieldnames[5] = ['number', 'N0', 'N1', 'd','p-value', 'success']
-    fieldnames[6] = ['number', 'mu', 'sigma', 'chi_sq','p-value', 'success']
-    fieldnames[7] = ['number', 'chi_sq','p-value', 'success']
-    fieldnames[8] = ['number', 'sigma', 'p-value', 'success']
-    fieldnames[9] = ['number', 'chi_sq','p-value', 'success']
-    fieldnames[10] = ['number', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
-    fieldnames[11] = ['number', 'appen_m', 'chi_sq', 'p-value', 'success']
-    fieldnames[12] = ['number', 'p_forward', 'p_backward', 'success']
-    fieldnames[13] = ['number', 'J', 'success']
-    fieldnames[14] = ['number', 'J', 'success']
+    fieldnames[0] = ['n', 'zeroes count', 'ones count', 'abs(ones-zeroes)', 'p-value', 'success']
+    fieldnames[1] = ['n','chi_sq','p-value', 'success']
+    fieldnames[2] = ['n', 'zeroes count', 'ones count', 'one_prop', 'vobs','p-value', 'success']
+    fieldnames[3] = ['n', 'chi_sq','p-value', 'success']
+    fieldnames[4] = ['n', 'M', 'Q', 'N', 'FM', "FMM", 'chi_sq', 'p-value', 'success']
+    fieldnames[5] = ['n', 'N0', 'N1', 'd','p-value', 'success']
+    fieldnames[6] = ['n', 'mu', 'sigma', 'chi_sq','p-value', 'success']
+    fieldnames[7] = ['n', 'template', 'M', 'N', 'K', 'model', 'v', 'lambda', 'eta', 'chi_sq','p-value', 'success']
+    fieldnames[8] = ['n', '#blocks', 'L', 'K', 'Q', 'sigma', 'p-value', 'success']
+    fieldnames[9] = ['n', 'M', 'N', 'K', 'v', 'mu', 'chi_sq', 'p-value', 'success']
+    fieldnames[10] = ['n', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
+    fieldnames[11] = ['n', 'appen_m', 'chi_sq', 'p-value', 'success']
+    fieldnames[12] = ['n', 'p_forward', 'p_backward', 'success']
+    fieldnames[13] = ['n', 'J', 'chi_sq[-4:4]', 'p-value[-4:4]', 'success']
+    fieldnames[14] = ['n', 'J', 'count[-9:9]', 'p-value', 'success']
     
     fo = [None]*NUM_TEST #file out
 
@@ -63,22 +64,121 @@ def main():
     result = [None]*NUM_TEST
 
 
-    for line in fi:
-        for i in range(NUM_TEST):
-            if fieldnames[i] != None:
-                # Get test file
-                if i<9:
-                    m = __import__("0"+ str(i+1) + "_" + testlist[i])
+    for i in range(NUM_TEST):
+        # Get corresponding .py test file
+        if i<9:
+            m = __import__("0"+ str(i+1) + "_" + testlist[i])
+        else:
+            m = __import__(str(i+1) + "_" + testlist[i])
+
+        fi = open(input, "r+") # input file
+
+        '''
+        Handle special cases: concatenate multiple lines into one to obtain 
+        input with enough bit length for each test
+        '''
+        # binary_matrix_rank_test
+        if i == 4:
+            # count = 0
+            bits = ''
+            for line in fi:
+                if len(bits) < 38912:
+                    bits += line[:-1]
                 else:
-                    m = __import__(str(i+1) + "_" + testlist[i])
+                    x = m.test(bits, len(bits))
 
-                x = m.test(line[:-1], 256)
+                    writeDict = {}
 
-                print(testlist[i] + ": result = " + str(x[len(x)-1]) + "\n")
-        exit()
+                    for j in range(len(x)):
+                        writeDict[fieldnames[i][j]] = x[j]
+
+                    writer[i].writerow(writeDict)
+                    bits = ''
+                    # count = 1
+        # overlapping_template_matching_test            
+        elif i == 7:
+            bits = ''
+            for line in fi:
+                if len(bits) < 1028016:
+                    bits += line[:-1]
+                else:
+                    x = m.test(bits, len(bits))
+
+                    writeDict = {}
+
+                    for j in range(len(x)):
+                        writeDict[fieldnames[i][j]] = x[j]
+
+                    writer[i].writerow(writeDict)
+                    bits = ''
+
+        #maurers_universal_test
+        elif i==8:
+            bits = ''
+            for line in fi:
+                if len(bits) < 387840:
+                    bits += line[:-1]
+                else:
+                    x = m.test(bits, len(bits))
+
+                    writeDict = {}
+
+                    for j in range(len(x)):
+                        writeDict[fieldnames[i][j]] = x[j]
+
+                    writer[i].writerow(writeDict)
+                    bits = ''
+        elif i==9:
+            bits = ''
+            for line in fi:
+                if len(bits) < 1000000:
+                    bits += line[:-1]
+                else:
+                    x = m.test(bits, len(bits))
+
+                    writeDict = {}
+
+                    for j in range(len(x)):
+                        writeDict[fieldnames[i][j]] = x[j]
+
+                    writer[i].writerow(writeDict)
+                    bits = ''
+        elif i==13 or i==14:
+            bits = ''
+            for line in fi:
+                if len(bits) < 1000000:
+                    bits += line[:-1]
+                else:
+                    x = m.test(bits, len(bits))
+
+                    if x[1] <500:
+                        x[len(x)-1] = str(x[len(x)-1]) + " NOT RELIABLE: J = 500"
+
+                    writeDict = {}
+
+                    for j in range(len(x)):
+                        writeDict[fieldnames[i][j]] = x[j]
+
+                    writer[i].writerow(writeDict)
+                    bits = ''
+        else:
+            for line in fi:
+                if fieldnames[i] != None:
+
+                    x = m.test(line[:-1], len(line[:-1]))
+
+                    writeDict = {}
+
+                    writeDict[fieldnames[i][0]] = len(line[:-1])
+
+                    # writer[i].write(123)
+
+                    for j in range(len(x)):
+                    	writeDict[fieldnames[i][j+1]] = x[j]
+
+                    writer[i].writerow(writeDict)
+        print("Test "+ str(i+1) + ": " + testlist[i] + " finished!")       	
         # for i in range(NUM_TEST):
-
-
 
 
 if __name__ == "__main__":

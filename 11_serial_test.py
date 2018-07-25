@@ -36,7 +36,7 @@ def test(input, n, patternlen=None):
     
         if m < 4:
             print("Error. Not enough data for m to be 4")
-            return [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, False]
+            return [0]*8
         m = 4
 
     # Step 1

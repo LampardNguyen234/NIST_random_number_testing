@@ -1,1 +1,1 @@
-number,zeroes count,ones count,s,p-value,success
+number,zeroes count,ones count,abs(ones-zeroes),p-value,success

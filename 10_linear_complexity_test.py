@@ -13,9 +13,9 @@ def berelekamp_massey(input):
     N = 0
     while (N < n):
         #compute discrepancy
-        d = input[N]
+        d = int(input[N],2)
         for i in range(1,L+1):
-            d = d ^ (c[i] & input[N-i])
+            d = d ^ (c[i] & int(input[N-i],2))
         if (d != 0):  # If d is not zero, adjust poly
             t = c[:]
             for i in range(0,n-N+m):
@@ -36,7 +36,7 @@ def test(input, n, patternlen=None):
     else: 
         if n < 1000000:
             print("Error. Need at least 10^6 input")
-            return [0.0, 0.0, False]
+            return [0]*9
         M = 512
     K = 6 
     N = int(math.floor(n/M))
@@ -78,15 +78,15 @@ def test(input, n, patternlen=None):
 
     # Step 5 Compute Chi Square Statistic
     pi = [0.010417,0.03125,0.125,0.5,0.25,0.0625,0.020833]
-    chisq = 0.0
+    chi_sq = 0.0
     for i in range(K+1):
-        chisq += ((v[i] - (N*pi[i]))**2.0)/(N*pi[i])
+        chi_sq += ((v[i] - (N*pi[i]))**2.0)/(N*pi[i])
 
     # Step 6 Compute P Value
-    P = ss. gammaincc((K/2.0),(chisq/2.0))
-
+    P = ss.gammaincc((K/2.0),(chi_sq/2.0))
+    # print("finished")
 
     success = (P >= 0.01)
-    return [chisq, P, success]
+    return [n, M, N, K, v, mu, chi_sq, P, success]
     
        

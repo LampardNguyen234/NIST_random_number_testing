@@ -39,5 +39,5 @@ def test(input, n):
             if p < 0.01:
                 success = False
 
-    return [J, plist, success]
+    return [n, J, count, plist, success]
 

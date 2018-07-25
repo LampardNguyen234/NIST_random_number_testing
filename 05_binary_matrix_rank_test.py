@@ -3,16 +3,12 @@ import copy
 import gf2matrix
 
 def test(input, n, M=32, Q=32):
-    n = len(input)
     N = int(math.floor(n/(M*Q))) #Number of blocks
-    # print("  Number of blocks %d" % N)
-    # print("  Data input used: %d" % (N*M*Q))
-    # print("  Data input discarded: %d" % (n-(N*M*Q))) 
     
     if N < 38:
         print("  Number of blocks must be greater than 37")
         p = 0.0
-        return [0.0, 0.0, False]
+        return [n, M, Q, N, 0, 0, 0.0, 0.0, False]
         
     # Compute the reference probabilities for FM, FMM and remainder 
     r = M
@@ -39,11 +35,18 @@ def test(input, n, M=32, Q=32):
     FMM = 0     # Number of rank -1 matrices
     remainder = 0
     for blknum in range(N):
-        block = input[blknum*(M*Q):(blknum+1)*(M*Q)]
+        block = [None] * (M*Q)
+        
+        for i in range(M*Q):
+            block[i] = int(input[blknum*M*Q + i],2)
+        # block = input[blknum*(M*Q):(blknum+1)*(M*Q)]
         # Put in a matrix
-        matrix = gf2matrix.matrix_from_input(M,Q,block,blknum) 
+        matrix = gf2matrix.matrix_from_bits(M,Q,block,blknum) 
+        # print("Helo")
         # Compute rank
         rank = gf2matrix.rank(M,Q,matrix,blknum)
+
+        # print("Hello2")
 
         if rank == M: # count the result
             FM += 1
@@ -63,4 +66,4 @@ def test(input, n, M=32, Q=32):
     # print("  Remainder Count = ",remainder) 
     # print("  Chi-Square = ",chisq)
 
-    return [chisq, p, success]
+    return [n, M, Q, N, FM, FMM, chisq, p, success]

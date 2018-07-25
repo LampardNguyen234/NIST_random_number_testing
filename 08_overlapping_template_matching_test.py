@@ -1,11 +1,10 @@
 
-from __future__ import print_function
-
 import math
 import scipy.special as ss
+# from random import randint
 
 def lgamma(x):
-    return math.log(gamma(x))
+    return math.log(ss.gamma(x))
     
 def Pr(u, eta):
     if ( u == 0 ):
@@ -29,11 +28,16 @@ def test(input, n, blen=6):
     
     if len(input) < (M*N):
         print("Insufficient data. %d bit provided. 1,028,016 input required" % len(input))
-        return 0.0, 0.0, False
+        return 0, 0.0, 0.0, 0.0, 0.0, False
     
     blocks = list() # Split into N blocks of M input
     for i in range(N):
-        blocks.append(input[i*M:(i+1)*M])
+        block = [None]*M
+        for j in range(M):
+            block[j] = int(input[i*M+j],2)
+        # print("block = "+ str(block))
+        # exit()
+        blocks.append(block)
 
     # Count the distribution of matches of the template across blocks: Vj
     v=[0 for x in range(K+1)] 
@@ -58,6 +62,7 @@ def test(input, n, blen=6):
     sum = 0.0
     for i in range(K): #  Compute Probabilities
         pi[i] = Pr(i, eta)
+        # print("p["+str(i) +"] = "+ str(pi[i]))
         sum += pi[i]
 
     pi[K] = 1 - sum;
@@ -80,4 +85,4 @@ def test(input, n, blen=6):
     print("  chisq = ",chisq)
     
     success = ( p >= 0.01)
-    return [chisq, p, success]
+    return [n, B, M, N, K, piqty, v, lambd, eta, chisq, p, success]

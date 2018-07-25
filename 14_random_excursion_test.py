@@ -69,6 +69,7 @@ def test(input, n):
     
     success = True
     plist = list()
+    chi_sq = list()
     for index in range(8):
         #list of states
         mapping = [-4,-3,-2,-1,1,2,3,4] 
@@ -81,10 +82,11 @@ def test(input, n):
             chisq += top/bottom
         p = ss.gammaincc(5.0/2.0,chisq/2.0)
         plist.append(p)
+        chi_sq.append(chisq)
         if p < 0.01:
             success = False
 
-    return [J, plist, success]
+    return [n, J, chi_sq, plist, success]
 
 
 

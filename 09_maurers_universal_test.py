@@ -12,7 +12,7 @@ def test(input, n, patternlen=None, initblocks=None):
         L = 6
         if n < 387840:
             print("Error. Need at least 387840 input. Got %d." % n)
-            return [0.0, 0.0, 0.0, False]
+            return [0] * 8
         for threshold in ns:
             if n >= threshold:
                 L += 1 
@@ -30,14 +30,14 @@ def test(input, n, patternlen=None, initblocks=None):
     T=[0 for x in range(nsymbols)] # zero out the table
     for i in range(Q):             # Mark final position of
         pattern = input[i*L:(i+1)*L] # each pattern
-        idx = pattern2int(pattern)
+        idx = int(pattern, 2)
         T[idx]=i+1      # +1 to number indexes 1..(2**L)+1
                         # instead of 0..2**L
     # Step 4 Iterate
     sum = 0.0
     for i in range(Q,nblocks):
         pattern = input[i*L:(i+1)*L]
-        j = pattern2int(pattern)
+        j = int(pattern,2)
         dist = i+1-T[j]
         T[j] = i+1
         sum = sum + math.log(dist,2)
@@ -61,5 +61,5 @@ def test(input, n, patternlen=None, initblocks=None):
     P = math.erfc(sigma)
 
     success = (P >= 0.01)
-    return [fn, sigma, P, success]
+    return [n, nblocks, L, K, Q, sigma, P, success]
     
