@@ -35,7 +35,7 @@ def main():
     fieldnames[7] = ['n', 'template', 'M', 'N', 'K', 'model', 'v', 'lambda', 'eta', 'chi_sq','p-value', 'success']
     fieldnames[8] = ['n', '#blocks', 'L', 'K', 'Q', 'sigma', 'p-value', 'success']
     fieldnames[9] = ['n', 'M', 'N', 'K', 'v', 'mu', 'chi_sq', 'p-value', 'success']
-    fieldnames[10] = ['n', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'success']
+    fieldnames[10] = ['n', 'psi_sq_m', 'psi_sq_mm1', 'psi_sq_mm2', 'delta1', 'delta2', 'p1', 'p2', 'p_average', 'success']
     fieldnames[11] = ['n', 'appen_m', 'chi_sq', 'p-value', 'success']
     fieldnames[12] = ['n', 'p_forward', 'p_backward', 'success']
     fieldnames[13] = ['n', 'J', 'chi_sq', 'p-value', 'p_average', 'success']
@@ -66,7 +66,7 @@ def main():
 
     for i in range(NUM_TEST):
 
-        if i==9:
+        if i!=9:
             continue
 
         total_count = 0
@@ -74,9 +74,9 @@ def main():
         p_average = 0.0
         # Get corresponding .py test file
         if i<9:
-            m = __import__("0"+ str(i+1) + "_" + testlist[i])
+            testFile = __import__("0"+ str(i+1) + "_" + testlist[i])
         else:
-            m = __import__(str(i+1) + "_" + testlist[i])
+            testFile = __import__(str(i+1) + "_" + testlist[i])
 
         fi = open(input, "r+") # input file
 
@@ -93,7 +93,7 @@ def main():
                     bits += line[:-1]
                 else:
                     total_count +=1
-                    x = m.test(bits, len(bits))
+                    x = testFile.test(bits, len(bits))
 
                     p_average += x[len(x)-2]
 
@@ -120,7 +120,7 @@ def main():
                     bits += line[:-1]
                 else:
                     total_count +=1
-                    x = m.test(bits, len(bits))
+                    x = testFile.test(bits, len(bits))
 
                     p_average += x[len(x)-2]
 
@@ -147,7 +147,7 @@ def main():
                     bits += line[:-1]
                 else:
                     total_count +=1
-                    x = m.test(bits, len(bits))
+                    x = testFile.test(bits, len(bits))
 
                     p_average += x[len(x)-2]
 
@@ -168,11 +168,11 @@ def main():
         elif i==9:
             bits = ''
             for line in fi:
-                if len(bits) < 1000000*2:
+                if len(bits) < 1000000:
                     bits += line[:-1]
                 else:
                     total_count +=1
-                    x = m.test(bits, len(bits))
+                    x = testFile.test(bits, len(bits))
 
                     p_average += x[len(x)-2]
 
@@ -181,7 +181,7 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 27:
+                    if total_count == 54:
                         print(x)
 
                     for j in range(len(x)):
@@ -197,7 +197,7 @@ def main():
                     bits += line[:-1]
                 else:
                     total_count +=1
-                    x = m.test(bits, len(bits))
+                    x = testFile.test(bits, len(bits))
 
                     p_average += x[len(x)-2]
 
@@ -223,7 +223,7 @@ def main():
                 total_count +=1
                 if fieldnames[i] != None:
 
-                    x = m.test(line[:-1], len(line[:-1]))
+                    x = testFile.test(line[:-1], len(line[:-1]))
 
                     p_average += x[len(x)-2]
 

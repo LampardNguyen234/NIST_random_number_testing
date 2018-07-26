@@ -15,7 +15,12 @@ def berelekamp_massey(input):
         #compute discrepancy
         d = int(input[N],2)
         for i in range(1,L+1):
-            d = d ^ (c[i] & int(input[N-i],2))
+            if input[N-i] == '1':
+                t = 1
+            else:
+                t = 0
+            d = d ^ (c[i] & t)
+            # print("d = " + str(d))
         if (d != 0):  # If d is not zero, adjust poly
             t = c[:]
             for i in range(0,n-N+m):
@@ -26,6 +31,7 @@ def berelekamp_massey(input):
                 b = t 
         N = N +1
     # Return length of generator and the polynomial
+    # print("Done")
     return L , c[0:L]
     
 def test(input, n, patternlen=None):
@@ -44,6 +50,7 @@ def test(input, n, patternlen=None):
     # Step 2 Compute the linear complexity of the blocks
     LC = list()
     for i in range(N):
+        # print("i = " + str(i))
         x = input[(i*M):((i+1)*M)]
         LC.append(berelekamp_massey(x)[0])
     
@@ -87,6 +94,7 @@ def test(input, n, patternlen=None):
     # print("finished")
 
     success = (P >= 0.01)
+    print("finished!\n")
     return [n, M, N, K, v, mu, chi_sq, P, success]
     
        

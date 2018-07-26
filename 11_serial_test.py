@@ -55,4 +55,4 @@ def test(input, n, patternlen=None):
      
     success = (p1 >= 0.01) and (p2 >= 0.01)
 
-    return [psi_sq_m, psi_sq_mm1, psi_sq_mm2, delta1, delta2, p1, p2, success]
+    return [psi_sq_m, psi_sq_mm1, psi_sq_mm2, delta1, delta2, p1, p2, (p1+p2)/2, success]
