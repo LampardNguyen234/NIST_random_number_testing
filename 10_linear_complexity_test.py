@@ -20,7 +20,6 @@ def berelekamp_massey(input):
             else:
                 t = 0
             d = d ^ (c[i] & t)
-            # print("d = " + str(d))
         if (d != 0):  # If d is not zero, adjust poly
             t = c[:]
             for i in range(0,n-N+m):
@@ -31,7 +30,6 @@ def berelekamp_massey(input):
                 b = t 
         N = N +1
     # Return length of generator and the polynomial
-    # print("Done")
     return L , c[0:L]
     
 def test(input, n, patternlen=None):
@@ -91,10 +89,8 @@ def test(input, n, patternlen=None):
 
     # Step 6 Compute P Value
     P = ss.gammaincc((K/2.0),(chi_sq/2.0))
-    # print("finished")
 
     success = (P >= 0.01)
-    print("finished!\n")
     return [n, M, N, K, v, mu, chi_sq, P, success]
     
        

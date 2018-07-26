@@ -5,28 +5,6 @@ import copy
 MATRIX_FORWARD_ELIMINATION = 0
 MATRIX_BACKWARD_ELIMINATION = 1
 
-def print_matrix(matrix):
-    #print "PRINT MATRIX"
-    #print "len matrix = ",str(len(matrix))
-    #for line in matrix:
-    #    print line
-    for i in range(len(matrix)):
-        #print "Line %d" % i
-        line = matrix[i]
-        #print "Line %d = %s" % (i,str(line))
-        if i==0:
-            astr = "["+str(line)+" : "
-        else:
-            astr += " "+str(line)+" : "
-        for ch in line:
-            astr = astr + str(ch)
-        if i == (len(matrix)-1):
-            astr += "]"
-        else:
-            astr = astr + "\n"
-    print(astr)
-    #print "END PRINT MATRIX"
-
     
 def row_echelon(M,Q,matrix,blknum):
     lm = copy.deepcopy(matrix)
@@ -147,10 +125,6 @@ def find_unit_element_and_swap(flag, i, M, Q, A):
 
 def swap_rows(i, index, Q, A):
     A[i],A[index] = A[index],A[i]
-    #for p in xrange(Q): 
-    #    temp = A[i][p]
-    #    A[i][p] = A[index][p]
-    #    A[index][p] = temp
     return A
 
 def determine_rank(m, M, Q, A):
@@ -163,13 +137,10 @@ def determine_rank(m, M, Q, A):
     
     rank = m
     for i in range(M):
-    #for ( i=0; i<M; i++ ) {
         allZeroes = 1 
         for j in range(Q):
-        #for ( j=0; j<Q; j++)  {
             if ( A[i][j] == 1 ):
                 allZeroes = 0
-                #break
         if ( allZeroes == 1 ):
             rank -= 1
     return rank

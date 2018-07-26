@@ -21,8 +21,6 @@ def test(input, n):
             if input[i] != input[i+1]:
                 vobs += 1.0
 
-    # print("  vobs ",vobs)
-      
         p = math.erfc(abs(vobs - (2.0*n*prop*(1.0-prop)))/(2.0*math.sqrt(2.0*n)*prop*(1-prop) ))
     
     success = (p>=0.01)

@@ -22,12 +22,12 @@ def test(input, n, blen=6):
     # Build the template B as a random list of input
     B = [1 for x in range(m)]
     
-    N = 968
-    K = 5
-    M = 1062
+    N = 968 # The number of blocks as specified in SP800-22rev1a
+    K = 5   # The number of degrees of freedom
+    M = 1062 # Length of each block as specified in SP800-22rev1a
     
     if len(input) < (M*N):
-        print("Insufficient data. %d bit provided. 1,028,016 input required" % len(input))
+        # Too little data. Inputs of length at least M*N bits required (Recommended 1,028,016)
         return [0]*12
     
     blocks = list() # Split into N blocks of M input
@@ -35,8 +35,7 @@ def test(input, n, blen=6):
         block = [None]*M
         for j in range(M):
             block[j] = int(input[i*M+j],2)
-        # print("block = "+ str(block))
-        # exit()
+
         blocks.append(block)
 
     # Count the distribution of matches of the template across blocks: Vj
@@ -62,7 +61,6 @@ def test(input, n, blen=6):
     sum = 0.0
     for i in range(K): #  Compute Probabilities
         pi[i] = Pr(i, eta)
-        # print("p["+str(i) +"] = "+ str(pi[i]))
         sum += pi[i]
 
     pi[K] = 1 - sum;

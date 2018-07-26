@@ -8,7 +8,7 @@ def test(input, n, M=32, Q=32):
     if N < 38:
         print("  Number of blocks must be greater than 37")
         p = 0.0
-        return [n, M, Q, N, 0, 0, 0.0, 0.0, False]
+        return [0]*9
         
     # Compute the reference probabilities for FM, FMM and remainder 
     r = M
@@ -39,14 +39,11 @@ def test(input, n, M=32, Q=32):
         
         for i in range(M*Q):
             block[i] = int(input[blknum*M*Q + i],2)
-        # block = input[blknum*(M*Q):(blknum+1)*(M*Q)]
+            
         # Put in a matrix
         matrix = gf2matrix.matrix_from_bits(M,Q,block,blknum) 
-        # print("Helo")
-        # Compute rank
         rank = gf2matrix.rank(M,Q,matrix,blknum)
 
-        # print("Hello2")
 
         if rank == M: # count the result
             FM += 1
@@ -58,12 +55,9 @@ def test(input, n, M=32, Q=32):
     chisq =  (((FM-(FR_prob*N))**2)/(FR_prob*N))
     chisq += (((FMM-(FRM1_prob*N))**2)/(FRM1_prob*N))
     chisq += (((remainder-(LR_prob*N))**2)/(LR_prob*N))
-    p = math.e **(-chisq/2.0)
-    success = (p >= 0.01)
     
-    # print("  Full Rank Count  = ",FM)
-    # print("  Full Rank -1 Count = ",FMM)
-    # print("  Remainder Count = ",remainder) 
-    # print("  Chi-Square = ",chisq)
+    p = math.e **(-chisq/2.0)
+
+    success = (p >= 0.01)
 
     return [n, M, Q, N, FM, FMM, chisq, p, success]

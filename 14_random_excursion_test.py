@@ -58,7 +58,7 @@ def test(input, n):
                             cyclecount += 1
             vxk[index][k] = cyclecount
     
-    # Table for reference random probabilities
+    # Table for reference random probabilities 
     pixk=[[0.5     ,0.25   ,0.125  ,0.0625  ,0.0312 ,0.0312],
           [0.75    ,0.0625 ,0.0469 ,0.0352  ,0.0264 ,0.0791],
           [0.8333  ,0.0278 ,0.0231 ,0.0193  ,0.0161 ,0.0804],
@@ -70,7 +70,7 @@ def test(input, n):
     success = True
     plist = list()
     chi_sq = list()
-    p_average = 0.0
+    p_total = 0.0
     for index in range(8):
         #list of states
         mapping = [-4,-3,-2,-1,1,2,3,4] 
@@ -82,13 +82,13 @@ def test(input, n):
             bottom = J * pixk[abs(x)-1][k]
             chisq += top/bottom
         p = ss.gammaincc(5.0/2.0,chisq/2.0)
-        p_average += p
+        p_total += p
         plist.append(p)
         chi_sq.append(chisq)
         if p < 0.01:
             success = False
 
-    return [n, J, chi_sq, plist, p_average/8, success]
+    return [n, J, chi_sq, plist, p_total/8, success]
 
 
 

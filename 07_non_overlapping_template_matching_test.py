@@ -47,7 +47,7 @@ def test(input, n):
                     [1,1,1,1,0,1,0,0],[1,1,1,1,0,1,1,0],[1,1,1,1,1,0,0,0],[1,1,1,1,1,0,1,0],
                     [1,1,1,1,1,1,0,0],[1,1,1,1,1,1,1,0]]
     
-    # Choose the template B
+    # Randomly choose the template B 
     r = random.SystemRandom()
     template_list = r.choice(templates)
     B = r.choice(template_list)
@@ -59,13 +59,17 @@ def test(input, n):
     
     blocks = list() # Split into N blocks of M bits
     for i in range(N):
-        blocks.append(input[i*M:(i+1)*M])
+        block = list()
+        for j in range(M):
+            block.append(int(input[i*M+j],2))
+        blocks.append(block)
 
     W=list() # Count the number of matches of the template in each block Wj
     for block in blocks:
         position = 0
         count = 0
         while position < (M-m):
+
             if block[position:position+m] == B:
                 position += m
                 count += 1
@@ -76,12 +80,12 @@ def test(input, n):
     mu = float(M-m+1)/float(2**m) # Compute mu and sigma
     sigma = M * ((1.0/float(2**m))-(float((2*m)-1)/float(2**(2*m))))
 
-    chisq = 0.0  # Compute Chi-Square
+    chi_sq = 0.0  # Compute Chi-Square
     for j in range(N):
-        chisq += ((W[j] - mu)**2)/(sigma**2)
+        chi_sq += ((W[j] - mu)**2)/(sigma**2)
 
-    p = ss.gammaincc(N/2.0, chisq/2.0) # Compute P value
+    p = ss.gammaincc(N/2.0, chi_sq/2.0) # Compute P value
 
     success = ( p >= 0.01)
 
-    return [mu, sigma, chisq, p, success]
+    return [mu, sigma, chi_sq, p, success]

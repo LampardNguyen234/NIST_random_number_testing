@@ -11,7 +11,7 @@ def test(input, n, patternlen=None, initblocks=None):
               231669760,496435200,1059061760]
         L = 6
         if n < 387840:
-            print("Error. Need at least 387840 input. Got %d." % n)
+            # Too little data. Inputs of length at least 387840 are recommended
             return [0] * 8
         for threshold in ns:
             if n >= threshold:

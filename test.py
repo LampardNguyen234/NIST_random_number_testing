@@ -19,12 +19,13 @@ testlist = [
         ]
 
 def main():
-    input = "input2.txt"
+    input = "input2.txt" # input file containing bit strings
 
     NUM_TEST = 15
 
-    fieldnames = [None] * NUM_TEST    #fieldnames according to csv file
 
+    # Write output to csv files
+    fieldnames = [None] * NUM_TEST    #fieldnames associating with outputs of each test
     fieldnames[0] = ['n', 'zeroes count', 'ones count', 'abs(ones-zeroes)', 'p-value', 'success']
     fieldnames[1] = ['n','chi_sq','p-value', 'success']
     fieldnames[2] = ['n', 'zeroes count', 'ones count', 'one_prop', 'vobs','p-value', 'success']
@@ -41,7 +42,7 @@ def main():
     fieldnames[13] = ['n', 'J', 'chi_sq', 'p-value', 'p_average', 'success']
     fieldnames[14] = ['n', 'J', 'count', 'p-value', 'p_average','success']
     
-    fo = [None]*NUM_TEST #file out
+    fo = [None]*NUM_TEST # list of output file
 
     output = [None]*NUM_TEST  #output file name
     writer = [None]*NUM_TEST  #writers of csv file
@@ -65,9 +66,6 @@ def main():
 
 
     for i in range(NUM_TEST):
-
-        if i!=9:
-            continue
 
         total_count = 0
         success_count =0
@@ -102,16 +100,12 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 698:
-                        print(x)
-
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
 
                     writer[i].writerow(writeDict)
                     bits = ''
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
-                    # count = 1
+
         # overlapping_template_matching_test            
         elif i == 7:
             bits = ''
@@ -129,15 +123,11 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 26:
-                        print(x)
-
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
 
                     writer[i].writerow(writeDict)
                     bits = ''
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
 
         #maurers_universal_test
         elif i==8:
@@ -156,16 +146,14 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 70:
-                        print(x)
-
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
 
                     writer[i].writerow(writeDict)
                     bits = ''
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
+        #linear_complexity_test
         elif i==9:
+
             bits = ''
             for line in fi:
                 if len(bits) < 1000000:
@@ -181,15 +169,12 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 54:
-                        print(x)
-
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
 
                     writer[i].writerow(writeDict)
                     bits = ''
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
+        #random_excursion_test and random_excursion_variant_test
         elif i==13 or i==14:
             bits = ''
             for line in fi:
@@ -209,15 +194,11 @@ def main():
 
                     writeDict = {}
 
-                    if total_count == 27:
-                        print(x)
-
                     for j in range(len(x)):
                         writeDict[fieldnames[i][j]] = x[j]
 
                     writer[i].writerow(writeDict)
                     bits = ''
-            writer[i].writerow({fieldnames[i][len(fieldnames[i])-1] : float(success_count)/total_count})
         else:
             for line in fi:
                 total_count +=1
@@ -234,11 +215,6 @@ def main():
 
                     writeDict[fieldnames[i][0]] = len(line[:-1])
 
-                    # writer[i].write(123)
-
-                    if total_count == 212906:
-                        print(x)
-
                     for j in range(len(x)):
                     	writeDict[fieldnames[i][j+1]] = x[j]
 
@@ -248,9 +224,9 @@ def main():
         writeDict[fieldnames[i][len(fieldnames[i])-2]] = p_average/total_count
 
         writer[i].writerow(writeDict)
+        print("p_average = " + str(p_average/total_count))
+        print("passed percentage = " + str(float(success_count)/total_count))
         print("Test "+ str(i+1) + ": " + testlist[i] + " finished!")       	
-        # for i in range(NUM_TEST):
-
 
 if __name__ == "__main__":
     main()

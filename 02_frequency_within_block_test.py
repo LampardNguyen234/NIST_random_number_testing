@@ -15,7 +15,7 @@ def test(input, n, M=32):
         M = int(math.floor(n/N))
 
     if n < 100:
-        # print("Too little data for test. Supply at least 100 bits")
+        # Too little data for test. Input of length at least 100 bits required
         return [0.0, 0.0, False]
 
     num_of_blocks = N
@@ -23,10 +23,12 @@ def test(input, n, M=32):
     block_size = M 
 
     proportions = list()
+
     for i in range(num_of_blocks):
+        
         block = input[i*(block_size):((i+1)*(block_size))]
         
-        ones = block.count('1') 
+        ones = block.count('1')
 
         zeroes = block.count('0') 
         
@@ -37,7 +39,7 @@ def test(input, n, M=32):
     for prop in proportions:
         chisq += 4.0*block_size*((prop - Fraction(1,2))**2)
     
-    p = ss.gammaincc((num_of_blocks/2.0),float(chisq)/2.0)
+    p = ss.gammaincc((num_of_blocks/2.0),float(chisq)/2.0) # p-value
     
     success = (p>= 0.01)
 

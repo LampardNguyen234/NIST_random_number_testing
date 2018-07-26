@@ -1,6 +1,5 @@
 import scipy.special as ss
 
-
 def test(input, n):
 
     M8 = [0.2148, 0.3672, 0.2305, 0.1875]
@@ -16,7 +15,7 @@ def test(input, n):
     v = [0,0,0,0,0,0,0]
 
     for i in range(N): # over each block
-        #find longest run
+        #find the longest run
         block = input[i*M:((i+1)*M)] # Block i
         
         run = 0
@@ -41,7 +40,7 @@ def test(input, n):
         upper = (v[i] - N*p_i)**2
         lower = N*p_i
         chi_sq += upper/lower
-    # Compute p-value
+    # p-value
     p = ss.gammaincc(K/2.0, chi_sq/2.0)
     
     success = (p>=0.01)
